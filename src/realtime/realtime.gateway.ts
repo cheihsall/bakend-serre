@@ -17,6 +17,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import { ConsoleLogger } from '@nestjs/common';
+import { log } from 'console';
 
 /*const port = new SerialPort({
   path: '/dev/ttyUSB0',
@@ -51,7 +52,7 @@ export class RealtimeGateway
   @WebSocketServer()
   public server: Server;
   public socket: Socket;
-  private url = 'ws://192.168.43.68:81';
+  // private url = 'ws://192.168.43.68:81';
   constructor(
     @InjectModel(Parametres.name)
     private parametresModel: Model<ParametresDocument>,
@@ -127,26 +128,16 @@ export class RealtimeGateway
   }
   handleConnection(
     @ConnectedSocket() client: Socket,
-    cient = new WebSocket(this.url),
+    // cient = new WebSocket(this.url),
   ) {
     //
-    /* console.log('Connexion Websocket');*/
+    console.log('Connexion Websocket');
 
     client.on('allumer', (data: any) => {
       console.log(data);
     });
     //FADEL DEBUT
     const msg = 'hello c chikh';
-    cient.onopen = () => {
-      /*console.log('WebSocket client connected');*/
-      cient.send(msg);
-    };
-    cient.onerror = (error) => {
-      console.error('WebSocket client error:', error);
-    };
-    cient.onmessage = (message) => {
-      console.log('WebSocket client received message:', message.data);
-    };
 
     //FIN FADEL
 
@@ -169,10 +160,161 @@ export class RealtimeGateway
     //FIN CHEIKH
 
     //DEBUT JOSEPHINE
+    client.on('systeme', (data: any) => {
+      //console.log(data);
+      /* debut extracteur */
+      if (data == '1') {
+        const data = {
+          extracteur: 1,
+          toiture: 0,
+          arrosage: 0,
+        };
+        //console.log(data)
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        //  port.write(jsonData);
+
+        // port.write(this.systemeON);
+      }
+
+      if (data == '0') {
+        const data = {
+          extracteur: 0,
+          toiture: 0,
+          arrosage: 0,
+        };
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        // port.write(jsonData);
+
+        //port.write(this.systemeOff);
+      }
+      /* Fin extracteur */
+
+      /* debut Toit */
+      if (data == '2') {
+        const data = {
+          extracteur: 0,
+          toiture: 2,
+          arrosage: 0,
+        };
+        const jsonData = JSON.stringify(data);
+        //  port.write(jsonData);
+        // port.write(this.ToitOuvert);
+      }
+      //this.logger.log(this.ToitOuvert);
+      if (data == '3') {
+        const data = {
+          extracteur: 0,
+          toiture: 3,
+          arrosage: 0,
+        };
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        //    port.write(jsonData);
+        //port.write(this.ToitFermer);
+      }
+
+      //this.logger.log(this.ToitFermer);
+      if (data == '4') {
+        const data = {
+          extracteur: 0,
+          toiture: 0,
+          arrosage: 4,
+        };
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        // port.write(jsonData);
+        //port.write(this.ToitFermer);
+      }
+      if (data == '5') {
+        const data = {
+          extracteur: 0,
+          toiture: 0,
+          arrosage: 5,
+        };
+
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        //  port.write(jsonData);
+        //port.write(this.ToitFermer);
+      }
+      if (data == '6') {
+        const data = {
+          extracteur: 0,
+          toiture: 0,
+          arrosage: 6,
+        };
+        const jsonData = JSON.stringify(data);
+        // port.write(jsonData);
+        // this.logger.log(data);
+
+        //port.write(this.ToitFermer);
+      }
+
+      if (data == '7') {
+        const data = {
+          extracteur: 0,
+          toiture: 0,
+          arrosage: 7,
+        };
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        //port.write(jsonData);
+        // this.logger.log(data);
+
+        //port.write(this.ToitFermer);
+      }
+
+      if (data == '8') {
+        const data = {
+          extracteur: 0,
+          toiture: 0,
+          arrosage: 8,
+        };
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+
+        //  port.write(jsonData);
+        //port.write(this.ToitFermer);
+      }
+
+      if (data == '9') {
+        const data = {
+          extracteur: 0,
+          toiture: 0,
+          arrosage: 9,
+        };
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
+        //  port.write(jsonData);
+        //port.write(this.ToitFermer);
+      }
+    });
 
     //FIN JOSEPHINE
 
     //DEBUT KHADIJA
+    /*   parser.on('data', (data) => {
+      try {
+        const json = JSON.parse(data);
+
+        // console.log(json);
+        const parame = {
+          temperature: json.Temperature,
+          humidite: json.Humidite,
+          humidite_sol: json.HumiditeSol,
+          lumiere: json.Luminosite,
+          etatvent: json.etatvent,
+          etattoit: json.etatoit,
+          etatpompe: json.etatpompe,
+          insecte: json.insecte,
+        };
+        client.emit('connecte', parame);
+      } catch (err) {
+        console.error(err);
+      }
+    });*/
   }
   //FIN KHADIJA
 }
