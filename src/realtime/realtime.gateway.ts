@@ -130,7 +130,7 @@ export class RealtimeGateway
     cient = new WebSocket(this.url),
   ) {
     //
-    console.log('Connexion Websocket');
+    /* console.log('Connexion Websocket');*/
 
     client.on('allumer', (data: any) => {
       console.log(data);
@@ -138,7 +138,7 @@ export class RealtimeGateway
     //FADEL DEBUT
     const msg = 'hello c chikh';
     cient.onopen = () => {
-      console.log('WebSocket client connected');
+      /*console.log('WebSocket client connected');*/
       cient.send(msg);
     };
     cient.onerror = (error) => {
