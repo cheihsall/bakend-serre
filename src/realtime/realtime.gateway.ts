@@ -171,6 +171,7 @@ export class RealtimeGateway
         };
         //console.log(data)
         const jsonData = JSON.stringify(data);
+        this.logger.log(jsonData);
         console.log(jsonData);
         //  port.write(jsonData);
 
